@@ -1,0 +1,217 @@
+{
+  "command": "make phase-0-gate",
+  "duration_seconds": 150.468,
+  "environment": {
+    "machine": "AMD64",
+    "os": "Windows-11-10.0.26200-SP0",
+    "python": "3.12.6"
+  },
+  "finished_at_utc": "2026-07-26T17:59:00.914449+00:00",
+  "gate": "phase-0",
+  "limitations": [
+    "This report proves the local Windows bootstrap gate only. No remote repository is configured, so hosted CI execution and server-side main branch protection are not claimed.",
+    "Phase 1 infrastructure and INF-C001 through INF-C017 are outside the phase-0 scope and were not executed."
+  ],
+  "report_path": "artifacts/phase0/latest.json",
+  "retry_policy": "No automatic retry: a flaky or transient failure remains a failed gate.",
+  "schema_version": 1,
+  "source": {
+    "branch": "main",
+    "commit": "77f16824e3582f328a32cf36e486c7d71c99b6b1",
+    "worktree_clean_before_report": true,
+    "worktree_status_before_report": []
+  },
+  "started_at_utc": "2026-07-26T17:56:30.548608+00:00",
+  "status": "passed",
+  "steps": [
+    {
+      "automatic_retries": 0,
+      "command": "\"D:\\Program Files\\Python312\\python.EXE\" scripts/check_governance.py",
+      "duration_seconds": 0.093,
+      "exit_code": 0,
+      "name": "governance",
+      "output_tail": "Governance check passed: MIT license, policies, owners, templates, and third-party provenance baseline are present.\n",
+      "output_truncated": false,
+      "requirement": "R0-01"
+    },
+    {
+      "automatic_retries": 0,
+      "command": "\"D:\\Program Files\\Python312\\python.EXE\" scripts/lint_adrs.py",
+      "duration_seconds": 0.141,
+      "exit_code": 0,
+      "name": "adr-lint",
+      "output_tail": "ADR lint passed: README index and ADR-001 through ADR-013 are valid (13 ADRs).\n",
+      "output_truncated": false,
+      "requirement": "R0-02"
+    },
+    {
+      "automatic_retries": 0,
+      "command": "\"D:\\Program Files\\Python312\\python.EXE\" scripts/check_docs.py",
+      "duration_seconds": 1.016,
+      "exit_code": 0,
+      "name": "documentation",
+      "output_tail": "Documentation check passed for 55 Markdown file(s): relative links, anchors, code fences, whitespace, and status claims.\n",
+      "output_truncated": false,
+      "requirement": "R0-01/R0-02"
+    },
+    {
+      "automatic_retries": 0,
+      "command": "\"D:\\Program Files\\Python312\\python.EXE\" scripts/scan_repository.py",
+      "duration_seconds": 0.875,
+      "exit_code": 0,
+      "name": "repository-scan",
+      "output_tail": "Repository scan passed: 262 Git candidate files, 261 text files, MIT license, dependency registry, boundaries, ignores, pins, and strong-secret patterns verified.\n",
+      "output_truncated": false,
+      "requirement": "R0-01"
+    },
+    {
+      "automatic_retries": 0,
+      "command": "\"D:\\Program Files\\Python312\\python.EXE\" scripts/run_proto_contract_tests.py",
+      "duration_seconds": 0.843,
+      "exit_code": 0,
+      "name": "proto-compatibility",
+      "output_tail": "ES-C001: Buf STANDARD lint/build passed.\nES-C002: current Proto is FILE-compatible with accepted v1 image.\nES-C002: deletion/renumbering negative control was rejected.\n",
+      "output_truncated": false,
+      "requirement": "R0-03/R0-05"
+    },
+    {
+      "automatic_retries": 0,
+      "command": "\"D:\\Program Files\\Python312\\python.EXE\" scripts/validate_registry.py",
+      "duration_seconds": 0.094,
+      "exit_code": 0,
+      "name": "registry",
+      "output_tail": "PASS  definition registry\\metrics\\app.duration\\v1.yaml\nPASS  definition registry\\streams\\app.foreground\\v1.yaml\nPASS  definition registry\\streams\\device.idle.state\\v1.yaml\nPASS  definition registry\\streams\\device.screen.state\\v1.yaml\nPASS  definition registry\\templates\\metric-v1.yaml\nPASS  definition registry\\templates\\stream-v1.yaml\nPASS  rejected fixture registry\\fixtures\\invalid\\invalid-name.json\nPASS  rejected fixture registry\\fixtures\\invalid\\invalid-unit.json\nPASS  rejected fixture registry\\fixtures\\invalid\\invalid-version.json\nPASS  rejected fixture registry\\fixtures\\invalid\\missing-privacy.json\nPASS  rejected fixture registry\\fixtures\\invalid\\non-private-default.json\nPASS  rejected fixture registry\\fixtures\\invalid\\public-projection.json\nPASS  rejected fixture registry\\fixtures\\invalid\\unknown-field.json\nPASS  rejected fixture registry\\fixtures\\invalid\\unknown-nested-field.json\nPASS  rejected fixture registry\\fixtures\\invalid\\wrong-payload.json\nPASS  valid fixture registry\\fixtures\\valid\\metric-template.json\nPASS  valid fixture registry\\fixtures\\valid\\stream-template.json\nRegistry validation passed: 4 definitions, 2 templates, 2 valid fixtures, 9 negative fixtures.\n",
+      "output_truncated": false,
+      "requirement": "R0-04"
+    },
+    {
+      "automatic_retries": 0,
+      "command": "\"D:\\Program Files\\Python312\\python.EXE\" scripts/run_semantic_contract_tests.py",
+      "duration_seconds": 0.891,
+      "exit_code": 0,
+      "name": "semantic-contracts",
+      "output_tail": "test_ES_C005_registry_schema_accepts_valid_and_rejects_targeted_cases (test_es_c005_c016.RegistryContractTests.test_ES_C005_registry_schema_accepts_valid_and_rejects_targeted_cases) ... ok\ntest_ES_C006_payload_type_url_must_match_stream_registry (test_es_c005_c016.RegistryContractTests.test_ES_C006_payload_type_url_must_match_stream_registry) ... ok\ntest_ES_C007_timestamp_bounds_and_interval_order_are_enforced (test_es_c005_c016.RegistryContractTests.test_ES_C007_timestamp_bounds_and_interval_order_are_enforced) ... ok\ntest_ES_C008_same_id_is_duplicate_only_for_same_durable_content (test_es_c005_c016.RegistryContractTests.test_ES_C008_same_id_is_duplicate_only_for_same_durable_content) ... ok\ntest_ES_C009_partition_key_is_length_framed_and_requires_every_field (test_es_c005_c016.RegistryContractTests.test_ES_C009_partition_key_is_length_framed_and_requires_every_field) ... ok\ntest_ES_C010_event_and_series_use_distinct_ingestion_topics (test_es_c005_c016.RegistryContractTests.test_ES_C010_event_and_series_use_distinct_ingestion_topics) ... ok\ntest_ES_C011_ack_requires_kafka_and_recoverable_terminal_evidence (test_es_c005_c016.RegistryContractTests.test_ES_C011_ack_requires_kafka_and_recoverable_terminal_evidence) ... ok\ntest_ES_C011_no_kafka_confirmation_never_yields_accepted (test_es_c005_c016.RegistryContractTests.test_ES_C011_no_kafka_confirmation_never_yields_accepted) ... ok\ntest_ES_C012_templates_default_private_and_missing_privacy_is_rejected (test_es_c005_c016.RegistryContractTests.test_ES_C012_templates_default_private_and_missing_privacy_is_rejected) ... ok\ntest_ES_C013_over_lateness_window_routes_to_late_topic_without_drop (test_es_c005_c016.RegistryContractTests.test_ES_C013_over_lateness_window_routes_to_late_topic_without_drop) ... ok\ntest_ES_C014_replay_is_deterministic_across_arrival_order (test_es_c005_c016.RegistryContractTests.test_ES_C014_replay_is_deterministic_across_arrival_order) ... ok\ntest_ES_C015_series_ack_is_atomic_across_all_durable_boundaries (test_es_c005_c016.RegistryContractTests.test_ES_C015_series_ack_is_atomic_across_all_durable_boundaries) ... ok\ntest_ES_C015_series_retry_reuses_object_and_metadata_after_crashes (test_es_c005_c016.RegistryContractTests.test_ES_C015_series_retry_reuses_object_and_metadata_after_crashes) ... ok\ntest_ES_C016_exact_retry_returns_persisted_ack_or_safe_recompute (test_es_c005_c016.RegistryContractTests.test_ES_C016_exact_retry_returns_persisted_ack_or_safe_recompute) ... ok\ntest_ES_C016_nonce_conflicts_on_batch_digest_or_signature_changes (test_es_c005_c016.RegistryContractTests.test_ES_C016_nonce_conflicts_on_batch_digest_or_signature_changes) ... ok\ntest_ES_C016_nonce_scope_is_per_device_key (test_es_c005_c016.RegistryContractTests.test_ES_C016_nonce_scope_is_per_device_key) ... ok\n\n----------------------------------------------------------------------\nRan 16 tests in 0.772s\n\nOK\nSemantic contract coverage: ES-C005, ES-C006, ES-C007, ES-C008, ES-C009, ES-C010, ES-C011, ES-C012, ES-C013, ES-C014, ES-C015, ES-C016\n",
+      "output_truncated": false,
+      "requirement": "R0-03/R0-04/R0-06"
+    },
+    {
+      "automatic_retries": 0,
+      "command": "\"D:\\Program Files\\Python312\\python.EXE\" contract-tests/generate_vectors.py --check",
+      "duration_seconds": 0.093,
+      "exit_code": 0,
+      "name": "golden-vector-source",
+      "output_tail": "Vector generation check passed: json=e96081428f67d830311f31ae968e41ebe13c241fb6fde4ea2173cbd4f126a836 properties=bbeb6e32b3344cdc1573b47c1f677e0070233676fcee9d649462bfa31a55f645\n",
+      "output_truncated": false,
+      "requirement": "R0-06"
+    },
+    {
+      "automatic_retries": 0,
+      "command": "\"D:\\Program Files\\PowerShell\\7\\pwsh.EXE\" -NoLogo -NoProfile -File scripts/verify_codegen.ps1",
+      "duration_seconds": 88.563,
+      "exit_code": 0,
+      "name": "five-language-codegen",
+      "output_tail": "Generated Go, Rust, Kotlin, Java, and TypeScript contracts locally.\n[Go compile] D:\\E\\projects\\LifeChronicle\\.tools\\go-sdk\\go\\bin\\go.exe test -mod=readonly ./...\n?   \tgithub.com/lifechronicle/lifechronicle/gen/go/lifechronicle/events/v1\t[no test files]\n[Rust compile] D:\\E\\projects\\LifeChronicle\\.tools\\cargo\\bin\\cargo.exe check --locked --manifest-path C:\\Users\\19635\\AppData\\Local\\Temp\\lifechronicle-codegen-02b160bce85a42659dd16a0f2eaa3d0a\\codegen\\rust\\Cargo.toml --target-dir C:\\Users\\19635\\AppData\\Local\\Temp\\lifechronicle-codegen-02b160bce85a42659dd16a0f2eaa3d0a\\cargo-target\n   Compiling proc-macro2 v1.0.107\n   Compiling quote v1.0.47\n   Compiling unicode-ident v1.0.24\n   Compiling shlex v2.0.1\n   Compiling find-msvc-tools v0.1.9\n   Compiling linkme-impl v0.3.37\n   Compiling paste-complete v1.0.15\n   Compiling linkme v0.3.37\n    Checking protobuf-codegen v4.35.0-release\n   Compiling cc v1.4.0\n   Compiling protobuf v4.35.0-release\n   Compiling syn v3.0.3\n   Compiling syn v2.0.119\n   Compiling protobuf-macros v4.35.0-release\n    Checking protobuf-well-known-types v4.35.0-release\n    Checking lifechronicle-events-v1 v0.1.0 (C:\\Users\\19635\\AppData\\Local\\Temp\\lifechronicle-codegen-02b160bce85a42659dd16a0f2eaa3d0a\\codegen\\rust)\n    Finished `dev` profile [unoptimized + debuginfo] target(s) in 7.39s\n[Java compile] D:\\E\\program\\gradle-9.0.0\\bin\\gradle.bat --no-daemon --console=plain --gradle-user-home D:\\E\\projects\\LifeChronicle\\.tools\\gradle-cache -p C:\\Users\\19635\\AppData\\Local\\Temp\\lifechronicle-codegen-02b160bce85a42659dd16a0f2eaa3d0a\\codegen\\java compileJava\nTo honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/9.0.0/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.\nDaemon will be stopped at the end of the build \n> Task :compileJava\n\nBUILD SUCCESSFUL in 29s\n1 actionable task: 1 executed\nConsider enabling configuration cache to speed up this build: https://docs.gradle.org/9.0.0/userguide/configuration_cache_enabling.html\n[Kotlin compile] D:\\E\\program\\gradle-9.0.0\\bin\\gradle.bat --no-daemon --console=plain --gradle-user-home D:\\E\\projects\\LifeChronicle\\.tools\\gradle-cache -p C:\\Users\\19635\\AppData\\Local\\Temp\\lifechronicle-codegen-02b160bce85a42659dd16a0f2eaa3d0a\\codegen\\kotlin compileKotlin\nTo honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/9.0.0/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.\nDaemon will be stopped at the end of the build \n> Task :checkKotlinGradlePluginConfigurationErrors SKIPPED\n> Task :compileKotlin\n\nBUILD SUCCESSFUL in 39s\n1 actionable task: 1 executed\nConsider enabling configuration cache to speed up this build: https://docs.gradle.org/9.0.0/userguide/configuration_cache_enabling.html\n[TypeScript compile] D:\\E\\projects\\LifeChronicle\\codegen\\typescript\\node_modules\\.bin\\tsc.ps1 --project D:\\E\\projects\\LifeChronicle\\codegen\\typescript\\tsconfig.json --noEmit\nGenerated Go, Rust, Kotlin, Java, and TypeScript contracts locally.\nFive-language generated code compiles and repeated generation is byte-for-byte stable.\n",
+      "output_truncated": false,
+      "requirement": "R0-05"
+    },
+    {
+      "automatic_retries": 0,
+      "command": "\"D:\\Program Files\\Python312\\python.EXE\" scripts/run_cross_language_contract_tests.py",
+      "duration_seconds": 57.75,
+      "exit_code": 0,
+      "name": "cross-language-contracts",
+      "output_tail": "[kotlin build]\nWARNING: A terminally deprecated method in sun.misc.Unsafe has been called\nWARNING: sun.misc.Unsafe::arrayBaseOffset has been called by com.google.protobuf.UnsafeUtil (file:/C:/Users/CodexSandboxOnline/.gradle/caches/modules-2/files-2.1/com.google.protobuf/protobuf-java/4.35.0/6d5d7c2261b26586e772f7fd2d27716272ef7bdd/protobuf-java-4.35.0.jar)\nWARNING: Please consider reporting this to the maintainers of class com.google.protobuf.UnsafeUtil\nWARNING: sun.misc.Unsafe::arrayBaseOffset will be removed in a future release\n[java build]\nWARNING: A terminally deprecated method in sun.misc.Unsafe has been called\nWARNING: sun.misc.Unsafe::arrayBaseOffset has been called by com.google.protobuf.UnsafeUtil (file:/C:/Users/CodexSandboxOnline/.gradle/caches/modules-2/files-2.1/com.google.protobuf/protobuf-java/4.35.0/6d5d7c2261b26586e772f7fd2d27716272ef7bdd/protobuf-java-4.35.0.jar)\nWARNING: Please consider reporting this to the maintainers of class com.google.protobuf.UnsafeUtil\nWARNING: sun.misc.Unsafe::arrayBaseOffset will be removed in a future release\ngo: 44 fields/frames match\nrust: 44 fields/frames match\nkotlin: 44 fields/frames match\njava: 44 fields/frames match\ntypescript: 44 fields/frames match\nCross-language contract coverage passed: ES-C003, ES-C004, ES-C009, ES-C017, ES-C018\n",
+      "output_truncated": false,
+      "requirement": "R0-06"
+    }
+  ],
+  "toolchain_lock": {
+    "content": {
+      "language_runtimes": {
+        "go": "google.golang.org/protobuf@v1.36.11",
+        "java": "com.google.protobuf:protobuf-java:4.35.0",
+        "kotlin": "com.google.protobuf:protobuf-kotlin:4.35.0",
+        "rust": "protobuf@4.35.0-release + protobuf-well-known-types@4.35.0-release",
+        "typescript": "@bufbuild/protobuf@2.13.0"
+      },
+      "policy": "exact versions; local generation only",
+      "schema_version": 1,
+      "tools": {
+        "buf": {
+          "source": "https://github.com/bufbuild/buf/releases/tag/v1.72.0",
+          "version": "1.72.0",
+          "windows_x86_64_sha256": "6e8f6d043e520bc81cae7b85d4cd6d93e57716a8a9842d5d18200191ee259cb5"
+        },
+        "go": {
+          "source": "https://go.dev/dl/",
+          "version": "1.26.5",
+          "windows_x86_64_zip_sha256": "97e6b2a833b6d89f9ff17d25419ac0a7e3b482a044e9ab18cdef834bd834fd38"
+        },
+        "gradle": {
+          "bin_zip_sha256": "8fad3d78296ca518113f3d29016617c7f9367dc005f932bd9d93bf45ba46072b",
+          "source": "https://services.gradle.org/distributions/gradle-9.0.0-bin.zip",
+          "version": "9.0.0"
+        },
+        "java": {
+          "ci_distribution": "temurin",
+          "jdk_version": "24.0.2",
+          "source": "https://adoptium.net/temurin/releases/?version=24",
+          "source_release": "17"
+        },
+        "kotlin": {
+          "gradle_plugin_version": "2.2.0",
+          "source": "https://github.com/JetBrains/kotlin/releases/tag/v2.2.0"
+        },
+        "node": {
+          "source": "https://nodejs.org/dist/v22.12.0/",
+          "version": "22.12.0"
+        },
+        "pnpm": {
+          "source": "https://github.com/pnpm/pnpm/releases/tag/v9.15.4",
+          "version": "9.15.4"
+        },
+        "protoc": {
+          "rust_runtime_version": "4.35.0-release",
+          "source": "https://github.com/protocolbuffers/protobuf/releases/tag/v35.0",
+          "version": "35.0",
+          "windows_x86_64_zip_sha256": "d1cede9e308cc3eb072392af1c02ccae4bdd3d2f374ec2970dbd8cdfdaa91363"
+        },
+        "protoc-gen-es": {
+          "package": "@bufbuild/protoc-gen-es@2.13.0",
+          "source": "https://www.npmjs.com/package/@bufbuild/protoc-gen-es/v/2.13.0",
+          "version": "2.13.0"
+        },
+        "protoc-gen-go": {
+          "module": "google.golang.org/protobuf/cmd/protoc-gen-go@v1.36.11",
+          "source": "https://pkg.go.dev/google.golang.org/protobuf@v1.36.11/cmd/protoc-gen-go",
+          "version": "1.36.11"
+        },
+        "rust": {
+          "cargo_version": "1.97.1",
+          "rustc_version": "1.97.1",
+          "source": "https://blog.rust-lang.org/2026/07/16/Rust-1.97.1/"
+        },
+        "typescript": {
+          "source": "https://www.npmjs.com/package/typescript/v/6.0.3",
+          "version": "6.0.3"
+        }
+      }
+    },
+    "path": "toolchain.lock.json",
+    "sha256": "908b79c225af8be4803b47d16330199cb7de3c06613b1383d4921aec36a78a35"
+  },
+  "vectors": {
+    "contract-tests/breaking-baseline/lifechronicle-v1.binpb": {
+      "sha256": "f160ec95b89b4b4e2c7236d9ba35e1cf016dbc81e938c0fb116ac91b8c6221f9",
+      "size_bytes": 40958
+    },
+    "contract-tests/vectors/phase0-v1.json": {
+      "sha256": "e96081428f67d830311f31ae968e41ebe13c241fb6fde4ea2173cbd4f126a836",
+      "size_bytes": 9141
+    },
+    "contract-tests/vectors/phase0-v1.properties": {
+      "sha256": "bbeb6e32b3344cdc1573b47c1f677e0070233676fcee9d649462bfa31a55f645",
+      "size_bytes": 7490
+    }
+  }
+}
