@@ -1,0 +1,130 @@
+syntax = "proto3";
+
+package lifechronicle.events.v1;
+
+import "lifechronicle/events/v1/common.proto";
+
+option go_package = "github.com/lifechronicle/lifechronicle/gen/go/lifechronicle/events/v1;eventsv1";
+option java_multiple_files = true;
+option java_outer_classname = "SeriesProto";
+option java_package = "io.lifechronicle.events.v1";
+option java_string_check_utf8 = true;
+
+// ChannelDataType identifies the scalar representation used in the registered
+// series payload layout.
+enum ChannelDataType {
+  CHANNEL_DATA_TYPE_UNSPECIFIED = 0;
+  CHANNEL_DATA_TYPE_INT8 = 1;
+  CHANNEL_DATA_TYPE_UINT8 = 2;
+  CHANNEL_DATA_TYPE_INT16 = 3;
+  CHANNEL_DATA_TYPE_UINT16 = 4;
+  CHANNEL_DATA_TYPE_INT32 = 5;
+  CHANNEL_DATA_TYPE_UINT32 = 6;
+  CHANNEL_DATA_TYPE_INT64 = 7;
+  CHANNEL_DATA_TYPE_UINT64 = 8;
+  CHANNEL_DATA_TYPE_FLOAT32 = 9;
+  CHANNEL_DATA_TYPE_FLOAT64 = 10;
+  CHANNEL_DATA_TYPE_BOOL = 11;
+}
+
+// MissingValueEncoding declares how missing values are represented in the
+// registered series payload layout.
+enum MissingValueEncoding {
+  MISSING_VALUE_ENCODING_UNSPECIFIED = 0;
+  MISSING_VALUE_ENCODING_NONE = 1;
+  MISSING_VALUE_ENCODING_SENTINEL = 2;
+  MISSING_VALUE_ENCODING_BITMAP = 3;
+  MISSING_VALUE_ENCODING_NAN = 4;
+}
+
+// ClockSource identifies the origin of a series clock.
+enum ClockSource {
+  CLOCK_SOURCE_UNSPECIFIED = 0;
+  CLOCK_SOURCE_SYSTEM_WALL = 1;
+  CLOCK_SOURCE_MONOTONIC = 2;
+  CLOCK_SOURCE_NETWORK_SYNCED = 3;
+  CLOCK_SOURCE_GNSS = 4;
+  CLOCK_SOURCE_DEVICE = 5;
+}
+
+// Channel declares the semantics needed to decode one channel from the
+// Registry-defined series payload.
+message Channel {
+  string name = 1;
+  ChannelDataType data_type = 2;
+  string unit = 3;
+  double scale = 4;
+  double offset = 5;
+  MissingValueEncoding missing_value_encoding = 6;
+  bytes missing_value_sentinel = 7;
+}
+
+// ClockMetadata preserves the device clock information needed to interpret
+// samples without rewriting their submitted timestamps.
+message ClockMetadata {
+  ClockSource source = 1;
+  string clock_id = 2;
+  int64 estimated_offset_ns = 3;
+  uint64 uncertainty_ns = 4;
+  double drift_ppm = 5;
+  bool adjusted_during_chunk = 6;
+}
+
+// SeriesChunk is the immutable device submission for high-frequency data.
+message SeriesChunk {
+  string chunk_id = 1;
+  string stream = 2;
+  uint32 schema_version = 3;
+
+  int64 start_time_ns = 4;
+  int64 end_time_ns = 5;
+  double nominal_sample_rate = 6;
+
+  repeated int64 timestamp_delta_ns = 7;
+  repeated Channel channels = 8;
+
+  // checksum is SHA-256 over the exact uncompressed payload bytes.
+  bytes compressed_payload = 9;
+  bytes checksum = 10;
+
+  string device_id = 11;
+  string collector_instance_id = 12;
+  string source = 13;
+  string timezone = 14;
+  PrivacyClass privacy_class = 15;
+  RetentionClass retention_class = 16;
+  uint64 sequence = 17;
+  ClockMetadata clock = 18;
+}
+
+// SeriesChunkMetadata is a field-for-field projection of SeriesChunk excluding
+// compressed_payload.
+message SeriesChunkMetadata {
+  string chunk_id = 1;
+  string stream = 2;
+  uint32 schema_version = 3;
+  int64 start_time_ns = 4;
+  int64 end_time_ns = 5;
+  double nominal_sample_rate = 6;
+  repeated int64 timestamp_delta_ns = 7;
+  repeated Channel channels = 8;
+  bytes checksum = 9;
+  string device_id = 10;
+  string collector_instance_id = 11;
+  string source = 12;
+  string timezone = 13;
+  PrivacyClass privacy_class = 14;
+  RetentionClass retention_class = 15;
+  uint64 sequence = 16;
+  ClockMetadata clock = 17;
+}
+
+// SeriesObjectReference is populated by Ingestion from a successful immutable
+// object-store write and never from client-provided values.
+message SeriesObjectReference {
+  string object_key = 1;
+  string object_version = 2;
+  uint64 compressed_size = 3;
+  bytes compressed_sha256 = 4;
+  Compression compression = 5;
+}

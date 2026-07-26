@@ -1,0 +1,495 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://lifechronicle.io/registry/schemas/stream-definition.v1.json",
+  "title": "LifeChronicle Stream Registry definition v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "api_version",
+    "name",
+    "status",
+    "owner",
+    "lifecycle",
+    "schema",
+    "record_kind",
+    "unit",
+    "defaults",
+    "accepted_retention_classes",
+    "event_time",
+    "partitioning",
+    "source_policy",
+    "aggregation",
+    "processors",
+    "privacy",
+    "series"
+  ],
+  "properties": {
+    "api_version": {
+      "const": "lifechronicle.io/stream/v1"
+    },
+    "name": {
+      "$ref": "#/$defs/registryName"
+    },
+    "status": {
+      "$ref": "#/$defs/status"
+    },
+    "owner": {
+      "$ref": "#/$defs/owner"
+    },
+    "lifecycle": {
+      "$ref": "#/$defs/lifecycle"
+    },
+    "schema": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "version",
+        "payload_type",
+        "event_type"
+      ],
+      "properties": {
+        "version": {
+          "$ref": "#/$defs/positiveVersion"
+        },
+        "payload_type": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*\\.v[1-9][0-9]*\\.[A-Z][A-Za-z0-9]*$",
+          "maxLength": 200
+        },
+        "event_type": {
+          "$ref": "#/$defs/registryName"
+        }
+      }
+    },
+    "record_kind": {
+      "enum": [
+        "STATE",
+        "INTERVAL",
+        "SAMPLE",
+        "DELTA",
+        "ANNOTATION",
+        "SERIES"
+      ]
+    },
+    "unit": {
+      "$ref": "#/$defs/nullableUnit"
+    },
+    "defaults": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "privacy_class",
+        "retention_class"
+      ],
+      "properties": {
+        "privacy_class": {
+          "$ref": "#/$defs/privacyClass"
+        },
+        "retention_class": {
+          "$ref": "#/$defs/retentionClass"
+        }
+      }
+    },
+    "accepted_retention_classes": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/retentionClass"
+      }
+    },
+    "event_time": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "field",
+        "max_clock_skew",
+        "max_out_of_order",
+        "realtime_allowed_lateness",
+        "late_event_action"
+      ],
+      "properties": {
+        "field": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*$",
+          "maxLength": 64
+        },
+        "max_clock_skew": {
+          "$ref": "#/$defs/duration"
+        },
+        "max_out_of_order": {
+          "$ref": "#/$defs/duration"
+        },
+        "realtime_allowed_lateness": {
+          "$ref": "#/$defs/duration"
+        },
+        "late_event_action": {
+          "enum": [
+            "topic_and_workflow_replay",
+            "reject"
+          ]
+        }
+      }
+    },
+    "partitioning": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "semantic",
+        "fields"
+      ],
+      "properties": {
+        "semantic": {
+          "enum": [
+            "device_order",
+            "user_order",
+            "series_order",
+            "target_order"
+          ]
+        },
+        "fields": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 8,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$",
+            "maxLength": 64
+          }
+        }
+      }
+    },
+    "source_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "strategy",
+        "priorities"
+      ],
+      "properties": {
+        "strategy": {
+          "enum": [
+            "preserve_all",
+            "prefer_priority",
+            "merge_explicit"
+          ]
+        },
+        "priorities": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+$",
+            "maxLength": 200
+          }
+        }
+      }
+    },
+    "aggregation": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "output"
+        ],
+        "properties": {
+          "id": {
+            "$ref": "#/$defs/componentId"
+          },
+          "output": {
+            "$ref": "#/$defs/registryName"
+          }
+        }
+      }
+    },
+    "processors": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "accepted_schema_versions"
+        ],
+        "properties": {
+          "id": {
+            "$ref": "#/$defs/componentId"
+          },
+          "accepted_schema_versions": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "$ref": "#/$defs/positiveVersion"
+            }
+          }
+        }
+      }
+    },
+    "privacy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "public_projection"
+      ],
+      "properties": {
+        "public_projection": {
+          "type": "string",
+          "pattern": "^(none|[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+)$",
+          "maxLength": 200
+        }
+      }
+    },
+    "series": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "#/$defs/series"
+        }
+      ]
+    }
+  },
+  "$defs": {
+    "positiveVersion": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "registryName": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*){1,4}$",
+      "maxLength": 200
+    },
+    "owner": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]*(/[a-z][a-z0-9-]*)?$",
+      "maxLength": 100
+    },
+    "componentId": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]*$",
+      "maxLength": 100
+    },
+    "status": {
+      "enum": [
+        "draft",
+        "active",
+        "deprecated",
+        "retired"
+      ]
+    },
+    "privacyClass": {
+      "enum": [
+        "PRIVATE",
+        "SENSITIVE",
+        "RESTRICTED"
+      ]
+    },
+    "retentionClass": {
+      "enum": [
+        "EPHEMERAL",
+        "STANDARD",
+        "LONG_TERM",
+        "USER_MANAGED",
+        "LEGAL_HOLD"
+      ]
+    },
+    "duration": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)(ns|us|ms|s|m|h|d)$",
+      "maxLength": 32
+    },
+    "nullableUnit": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "string",
+          "pattern": "^[A-Za-z%][A-Za-z0-9%./*^{}-]{0,31}$"
+        }
+      ]
+    },
+    "lifecycle": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "introduced_registry_version",
+        "deprecated_registry_version",
+        "retired_registry_version",
+        "replacement",
+        "migration_note"
+      ],
+      "properties": {
+        "introduced_registry_version": {
+          "$ref": "#/$defs/positiveVersion"
+        },
+        "deprecated_registry_version": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "retired_registry_version": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "replacement": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/registryName"
+            }
+          ]
+        },
+        "migration_note": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 500
+        }
+      }
+    },
+    "series": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "format_version",
+        "payload_format",
+        "compression",
+        "endianness",
+        "timestamp_encoding",
+        "channels",
+        "chunk_limits",
+        "reconstruction"
+      ],
+      "properties": {
+        "format_version": {
+          "$ref": "#/$defs/positiveVersion"
+        },
+        "payload_format": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_-]*$",
+          "maxLength": 64
+        },
+        "compression": {
+          "const": "zstd"
+        },
+        "endianness": {
+          "enum": [
+            "little",
+            "big"
+          ]
+        },
+        "timestamp_encoding": {
+          "enum": [
+            "deltas_ns",
+            "fixed_rate"
+          ]
+        },
+        "channels": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "name",
+              "data_type",
+              "unit",
+              "scale",
+              "missing_value_encoding"
+            ],
+            "properties": {
+              "name": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_]*$",
+                "maxLength": 64
+              },
+              "data_type": {
+                "enum": [
+                  "INT8",
+                  "UINT8",
+                  "INT16",
+                  "UINT16",
+                  "INT32",
+                  "UINT32",
+                  "INT64",
+                  "UINT64",
+                  "FLOAT32",
+                  "FLOAT64"
+                ]
+              },
+              "unit": {
+                "$ref": "#/$defs/nullableUnit"
+              },
+              "scale": {
+                "type": "number"
+              },
+              "missing_value_encoding": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 64
+              }
+            }
+          }
+        },
+        "chunk_limits": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "target_duration",
+            "max_uncompressed_bytes",
+            "max_samples"
+          ],
+          "properties": {
+            "target_duration": {
+              "$ref": "#/$defs/duration"
+            },
+            "max_uncompressed_bytes": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "max_samples": {
+              "type": "integer",
+              "minimum": 1
+            }
+          }
+        },
+        "reconstruction": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "sample_period_ns"
+              ],
+              "properties": {
+                "sample_period_ns": {
+                  "type": "integer",
+                  "minimum": 1
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

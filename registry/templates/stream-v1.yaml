@@ -1,0 +1,61 @@
+{
+  "api_version": "lifechronicle.io/stream/v1",
+  "name": "example.activity.state",
+  "status": "draft",
+  "owner": "data-contracts",
+  "lifecycle": {
+    "introduced_registry_version": 1,
+    "deprecated_registry_version": null,
+    "retired_registry_version": null,
+    "replacement": null,
+    "migration_note": null
+  },
+  "schema": {
+    "version": 1,
+    "payload_type": "lifechronicle.events.v1.ExampleActivityState",
+    "event_type": "example.activity.state.observed"
+  },
+  "record_kind": "STATE",
+  "unit": null,
+  "defaults": {
+    "privacy_class": "PRIVATE",
+    "retention_class": "LONG_TERM"
+  },
+  "accepted_retention_classes": [
+    "STANDARD",
+    "LONG_TERM",
+    "USER_MANAGED"
+  ],
+  "event_time": {
+    "field": "observed_at",
+    "max_clock_skew": "24h",
+    "max_out_of_order": "15m",
+    "realtime_allowed_lateness": "24h",
+    "late_event_action": "topic_and_workflow_replay"
+  },
+  "partitioning": {
+    "semantic": "device_order",
+    "fields": [
+      "user_id",
+      "device_id",
+      "collector_instance_id"
+    ]
+  },
+  "source_policy": {
+    "strategy": "preserve_all",
+    "priorities": []
+  },
+  "aggregation": [],
+  "processors": [
+    {
+      "id": "normalization",
+      "accepted_schema_versions": [
+        1
+      ]
+    }
+  ],
+  "privacy": {
+    "public_projection": "none"
+  },
+  "series": null
+}

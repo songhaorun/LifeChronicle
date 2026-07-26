@@ -1,0 +1,107 @@
+# Operating systems
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Editors and local workspace state
+.idea/
+.fleet/
+.history/
+*.swp
+*.swo
+*~
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+
+# Local environment and secrets
+/.tools/
+.env
+.env.*
+!.env.example
+*.local
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.keystore
+.secrets/
+secrets/
+
+# Logs, process state and crash dumps
+*.log
+*.pid
+*.seed
+*.dmp
+*.dump
+/logs/
+
+# Generic build, cache and coverage outputs
+.cache/
+/tmp/
+/temp/
+/out/
+/dist/
+/build/
+/coverage/
+/.coverage/
+/.nyc_output/
+
+# Java, Kotlin and Gradle
+.gradle/
+**/build/
+*.class
+
+# JavaScript and TypeScript
+node_modules/
+.pnpm-store/
+.yarn/cache/
+.yarn/unplugged/
+.npm/
+*.tsbuildinfo
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.tox/
+.nox/
+.venv/
+venv/
+
+# Rust
+target/
+
+# Go
+*.test
+*.out
+coverage.out
+
+# Terraform and local infrastructure state
+.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Local Kubernetes and Helm artifacts
+*.kubeconfig
+*.rendered.yaml
+
+# Local databases and generated runtime data
+*.local.db
+*.local.sqlite
+*.local.sqlite3
+/data/
+
+# Do not ignore dependency lock files, source-controlled generated contracts,
+# migrations, fixtures, SBOMs or license reports.

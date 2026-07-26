@@ -1,0 +1,76 @@
+syntax = "proto3";
+
+package lifechronicle.events.v1;
+
+import "google/protobuf/any.proto";
+import "google/protobuf/timestamp.proto";
+import "lifechronicle/events/v1/common.proto";
+
+option go_package = "github.com/lifechronicle/lifechronicle/gen/go/lifechronicle/events/v1;eventsv1";
+option java_multiple_files = true;
+option java_outer_classname = "EventProto";
+option java_package = "io.lifechronicle.events.v1";
+option java_string_check_utf8 = true;
+
+// Origin records how a fact was collected, imported, or derived.
+message Origin {
+  string provider = 1;
+  string provider_record_id = 2;
+  string import_id = 3;
+  string parent_event_id = 4;
+  string collection_method = 5;
+}
+
+// EventEnvelope is the immutable envelope for ordinary, non-series facts.
+message EventEnvelope {
+  string event_id = 1;
+  string stream = 2;
+  string event_type = 3;
+  RecordKind kind = 4;
+
+  // user_id is empty on a device submission and is injected by Ingestion
+  // only after authentication, signature, hash, Proto, and Registry checks.
+  string user_id = 5;
+  string device_id = 6;
+  string collector_instance_id = 7;
+  string source = 8;
+
+  uint32 schema_version = 9;
+  uint64 sequence = 10;
+
+  google.protobuf.Timestamp observed_at = 11;
+  google.protobuf.Timestamp ended_at = 12;
+  string timezone = 13;
+
+  PrivacyClass privacy_class = 14;
+  RetentionClass retention_class = 15;
+
+  Origin origin = 16;
+
+  reserved 17 to 19;
+
+  google.protobuf.Any payload = 20;
+}
+
+// Correction points from an immutable target fact to a separately accepted
+// replacement fact.
+message Correction {
+  string target_event_id = 1;
+  string replacement_event_id = 2;
+  string reason_code = 3;
+}
+
+// Tombstone expresses logical deletion intent. Physical deletion is performed
+// by the deletion workflow across storage systems.
+message Tombstone {
+  string target_id = 1;
+  string target_kind = 2;
+  string reason_code = 3;
+}
+
+// Annotation attaches user labels or a note without mutating target facts.
+message Annotation {
+  repeated string target_event_ids = 1;
+  repeated string labels = 2;
+  string note = 3;
+}

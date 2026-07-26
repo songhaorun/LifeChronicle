@@ -1,0 +1,370 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://lifechronicle.io/registry/schemas/metric-definition.v1.json",
+  "title": "LifeChronicle Metric Registry definition v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "api_version",
+    "name",
+    "status",
+    "owner",
+    "lifecycle",
+    "description",
+    "schema",
+    "unit",
+    "source_streams",
+    "event_time",
+    "window",
+    "aggregation",
+    "processors",
+    "defaults",
+    "accepted_retention_classes",
+    "privacy"
+  ],
+  "properties": {
+    "api_version": {
+      "const": "lifechronicle.io/metric/v1"
+    },
+    "name": {
+      "$ref": "#/$defs/registryName"
+    },
+    "status": {
+      "$ref": "#/$defs/status"
+    },
+    "owner": {
+      "$ref": "#/$defs/owner"
+    },
+    "lifecycle": {
+      "$ref": "#/$defs/lifecycle"
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 500
+    },
+    "schema": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "version",
+        "value_type"
+      ],
+      "properties": {
+        "version": {
+          "$ref": "#/$defs/positiveVersion"
+        },
+        "value_type": {
+          "enum": [
+            "INT64",
+            "DOUBLE",
+            "DECIMAL_STRING"
+          ]
+        }
+      }
+    },
+    "unit": {
+      "$ref": "#/$defs/unit"
+    },
+    "source_streams": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "stream",
+          "schema_versions"
+        ],
+        "properties": {
+          "stream": {
+            "$ref": "#/$defs/registryName"
+          },
+          "schema_versions": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "$ref": "#/$defs/positiveVersion"
+            }
+          }
+        }
+      }
+    },
+    "event_time": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "basis",
+        "max_out_of_order",
+        "realtime_allowed_lateness",
+        "late_event_action"
+      ],
+      "properties": {
+        "basis": {
+          "enum": [
+            "observed_at",
+            "interval_boundaries",
+            "session_boundaries"
+          ]
+        },
+        "max_out_of_order": {
+          "$ref": "#/$defs/duration"
+        },
+        "realtime_allowed_lateness": {
+          "$ref": "#/$defs/duration"
+        },
+        "late_event_action": {
+          "enum": [
+            "topic_and_workflow_replay",
+            "reject"
+          ]
+        }
+      }
+    },
+    "window": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "size",
+        "timezone"
+      ],
+      "properties": {
+        "type": {
+          "enum": [
+            "SESSION",
+            "TUMBLING",
+            "CALENDAR"
+          ]
+        },
+        "size": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/duration"
+            }
+          ]
+        },
+        "timezone": {
+          "const": "UTC"
+        }
+      }
+    },
+    "aggregation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "operation",
+        "input_fields",
+        "group_by",
+        "deterministic",
+        "revision_field"
+      ],
+      "properties": {
+        "operation": {
+          "enum": [
+            "DURATION_BETWEEN_TRANSITIONS",
+            "SUM",
+            "COUNT",
+            "MIN",
+            "MAX"
+          ]
+        },
+        "input_fields": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/fieldName"
+          }
+        },
+        "group_by": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/fieldName"
+          }
+        },
+        "deterministic": {
+          "const": true
+        },
+        "revision_field": {
+          "$ref": "#/$defs/fieldName"
+        }
+      }
+    },
+    "processors": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "accepted_metric_versions"
+        ],
+        "properties": {
+          "id": {
+            "$ref": "#/$defs/componentId"
+          },
+          "accepted_metric_versions": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "$ref": "#/$defs/positiveVersion"
+            }
+          }
+        }
+      }
+    },
+    "defaults": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "privacy_class",
+        "retention_class"
+      ],
+      "properties": {
+        "privacy_class": {
+          "$ref": "#/$defs/privacyClass"
+        },
+        "retention_class": {
+          "$ref": "#/$defs/retentionClass"
+        }
+      }
+    },
+    "accepted_retention_classes": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/retentionClass"
+      }
+    },
+    "privacy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "public_projection"
+      ],
+      "properties": {
+        "public_projection": {
+          "type": "string",
+          "pattern": "^(none|[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+)$",
+          "maxLength": 200
+        }
+      }
+    }
+  },
+  "$defs": {
+    "positiveVersion": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "registryName": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*){1,4}$",
+      "maxLength": 200
+    },
+    "fieldName": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*$",
+      "maxLength": 64
+    },
+    "owner": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]*(/[a-z][a-z0-9-]*)?$",
+      "maxLength": 100
+    },
+    "componentId": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]*$",
+      "maxLength": 100
+    },
+    "status": {
+      "enum": [
+        "draft",
+        "active",
+        "deprecated",
+        "retired"
+      ]
+    },
+    "privacyClass": {
+      "enum": [
+        "PRIVATE",
+        "SENSITIVE",
+        "RESTRICTED"
+      ]
+    },
+    "retentionClass": {
+      "enum": [
+        "EPHEMERAL",
+        "STANDARD",
+        "LONG_TERM",
+        "USER_MANAGED",
+        "LEGAL_HOLD"
+      ]
+    },
+    "duration": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)(ns|us|ms|s|m|h|d)$",
+      "maxLength": 32
+    },
+    "unit": {
+      "type": "string",
+      "pattern": "^[A-Za-z%][A-Za-z0-9%./*^{}-]{0,31}$"
+    },
+    "lifecycle": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "introduced_registry_version",
+        "deprecated_registry_version",
+        "retired_registry_version",
+        "replacement",
+        "migration_note"
+      ],
+      "properties": {
+        "introduced_registry_version": {
+          "$ref": "#/$defs/positiveVersion"
+        },
+        "deprecated_registry_version": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "retired_registry_version": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "replacement": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/registryName"
+            }
+          ]
+        },
+        "migration_note": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 500
+        }
+      }
+    }
+  }
+}

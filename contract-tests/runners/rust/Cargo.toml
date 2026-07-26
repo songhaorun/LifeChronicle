@@ -1,0 +1,9 @@
+[package]
+name = "lifechronicle-contract-runner-rust"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+[dependencies]
+lifechronicle-events-v1 = { path = "../../../codegen/rust" }
+protobuf = "=4.35.0-release"

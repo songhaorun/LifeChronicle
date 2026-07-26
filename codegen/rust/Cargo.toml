@@ -1,0 +1,12 @@
+[package]
+name = "lifechronicle-events-v1"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+[lib]
+path = "../../generated/rust/lifechronicle/events/v1/lib.rs"
+
+[dependencies]
+protobuf = "=4.35.0-release"
+protobuf-well-known-types = "=4.35.0-release"

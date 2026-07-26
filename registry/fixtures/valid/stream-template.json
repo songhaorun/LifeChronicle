@@ -1,0 +1,10 @@
+{
+  "api_version": "lifechronicle.io/registry-fixture/v1",
+  "name": "stream-template-valid",
+  "base": "templates/stream-v1.yaml",
+  "mutations": [],
+  "expected": {
+    "valid": true,
+    "error_contains": null
+  }
+}

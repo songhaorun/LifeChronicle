@@ -1,0 +1,16 @@
+{
+  "api_version": "lifechronicle.io/registry-fixture/v1",
+  "name": "unknown-nested-field",
+  "base": "templates/stream-v1.yaml",
+  "mutations": [
+    {
+      "op": "set",
+      "path": "schema.payload_typo",
+      "value": "lifechronicle.events.v1.ExampleActivityState"
+    }
+  ],
+  "expected": {
+    "valid": false,
+    "error_contains": "$.schema: unknown field 'payload_typo'"
+  }
+}

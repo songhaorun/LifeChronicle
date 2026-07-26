@@ -1,0 +1,16 @@
+{
+  "api_version": "lifechronicle.io/registry-fixture/v1",
+  "name": "invalid-name",
+  "base": "templates/stream-v1.yaml",
+  "mutations": [
+    {
+      "op": "set",
+      "path": "name",
+      "value": "App.Foreground"
+    }
+  ],
+  "expected": {
+    "valid": false,
+    "error_contains": "$.name: value does not match"
+  }
+}

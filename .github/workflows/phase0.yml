@@ -1,0 +1,89 @@
+name: Phase 0
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: phase-0-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  phase-0-gate:
+    name: phase-0-gate
+    runs-on: windows-2025
+    timeout-minutes: 45
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+
+      - name: Read exact toolchain versions
+        id: toolchain
+        shell: pwsh
+        run: |
+          $lock = Get-Content -LiteralPath toolchain.lock.json -Raw | ConvertFrom-Json
+          "go=$($lock.tools.go.version)" >> $env:GITHUB_OUTPUT
+          "java=$($lock.tools.java.jdk_version)" >> $env:GITHUB_OUTPUT
+          "node=$($lock.tools.node.version)" >> $env:GITHUB_OUTPUT
+
+      - name: Set up Python control plane
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
+        with:
+          python-version: "3.13.5"
+          cache: ""
+
+      - name: Set up pinned Go
+        uses: actions/setup-go@d35c59abb061a4a6fb18e82ac0862c26744d6ab5 # v5.5.0
+        with:
+          go-version: ${{ steps.toolchain.outputs.go }}
+          cache: false
+
+      - name: Set up pinned Java
+        uses: actions/setup-java@c5195efecf7bdfc987ee8bae7a71cb8b11521c00 # v4.7.1
+        with:
+          distribution: temurin
+          java-version: ${{ steps.toolchain.outputs.java }}
+
+      - name: Set up pinned Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: ${{ steps.toolchain.outputs.node }}
+
+      - name: Bootstrap and verify pinned contract tools
+        shell: pwsh
+        run: ./scripts/bootstrap_contract_tools.ps1
+
+      - name: Select GNU Make from the Windows image
+        shell: pwsh
+        run: |
+          $makeDirectory = "C:\msys64\usr\bin"
+          $makePath = Join-Path $makeDirectory "make.exe"
+          if (-not (Test-Path -LiteralPath $makePath -PathType Leaf)) {
+            throw "The windows-2025 image does not provide the expected pinned-image GNU Make."
+          }
+          $makeDirectory >> $env:GITHUB_PATH
+
+      - name: Run the Phase 0 gate
+        shell: pwsh
+        run: make phase-0-gate
+
+      - name: Reject whitespace errors and generated drift
+        shell: pwsh
+        run: |
+          git diff --check
+          if ($LASTEXITCODE -ne 0) {
+            throw "git diff --check failed."
+          }
+          git diff --exit-code -- generated
+          if ($LASTEXITCODE -ne 0) {
+            throw "Generated contracts differ from the committed outputs."
+          }

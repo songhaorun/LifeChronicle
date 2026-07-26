@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package lifechronicle.events.v1;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/lifechronicle/lifechronicle/gen/go/lifechronicle/events/v1;eventsv1";
+option java_multiple_files = true;
+option java_outer_classname = "LineageProto";
+option java_package = "io.lifechronicle.events.v1";
+option java_string_check_utf8 = true;
+
+// TimeRange identifies the inclusive input time range of a processing run.
+message TimeRange {
+  google.protobuf.Timestamp start = 1;
+  google.protobuf.Timestamp end = 2;
+}
+
+// Lineage makes derived records reproducible from a fixed input snapshot and
+// processor/rule versions.
+message Lineage {
+  string processor_id = 1;
+  string processor_version = 2;
+  string rule_version = 3;
+  repeated string input_streams = 4;
+  TimeRange input_time_range = 5;
+  string input_snapshot = 6;
+  string output_schema = 7;
+  string processor_run_id = 8;
+  google.protobuf.Timestamp processed_at = 9;
+}

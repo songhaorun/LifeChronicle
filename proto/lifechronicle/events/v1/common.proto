@@ -1,0 +1,63 @@
+syntax = "proto3";
+
+package lifechronicle.events.v1;
+
+option go_package = "github.com/lifechronicle/lifechronicle/gen/go/lifechronicle/events/v1;eventsv1";
+option java_multiple_files = true;
+option java_outer_classname = "CommonProto";
+option java_package = "io.lifechronicle.events.v1";
+option java_string_check_utf8 = true;
+
+// RecordKind describes the temporal shape of an event or stream.
+enum RecordKind {
+  RECORD_KIND_UNSPECIFIED = 0;
+  RECORD_KIND_STATE = 1;
+  RECORD_KIND_INTERVAL = 2;
+  RECORD_KIND_SAMPLE = 3;
+  RECORD_KIND_DELTA = 4;
+  RECORD_KIND_SERIES = 5;
+  RECORD_KIND_ANNOTATION = 6;
+}
+
+// PrivacyClass is the minimum handling class for a fact.
+enum PrivacyClass {
+  PRIVACY_CLASS_UNSPECIFIED = 0;
+  PRIVACY_CLASS_PRIVATE = 1;
+  PRIVACY_CLASS_SENSITIVE = 2;
+  PRIVACY_CLASS_RESTRICTED = 3;
+}
+
+// RetentionClass selects a registered retention policy.
+enum RetentionClass {
+  RETENTION_CLASS_UNSPECIFIED = 0;
+  RETENTION_CLASS_STANDARD = 1;
+  RETENTION_CLASS_LONG_TERM = 2;
+  RETENTION_CLASS_EPHEMERAL = 3;
+  RETENTION_CLASS_USER_MANAGED = 4;
+}
+
+// Compression identifies the byte-level compression used by a batch or
+// persisted series object. Version 1 accepts only Zstandard.
+enum Compression {
+  COMPRESSION_UNSPECIFIED = 0;
+  COMPRESSION_ZSTD = 1;
+}
+
+// QualitySeverity indicates how strongly a quality signal affects downstream
+// interpretation. It does not change the original fact.
+enum QualitySeverity {
+  QUALITY_SEVERITY_UNSPECIFIED = 0;
+  QUALITY_SEVERITY_INFO = 1;
+  QUALITY_SEVERITY_WARNING = 2;
+  QUALITY_SEVERITY_ERROR = 3;
+}
+
+// QualitySignal records a machine-readable observation about data quality.
+// detail_id refers to restricted diagnostics and must not contain raw payload
+// text or credentials.
+message QualitySignal {
+  string code = 1;
+  QualitySeverity severity = 2;
+  string field_path = 3;
+  string detail_id = 4;
+}

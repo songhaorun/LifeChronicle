@@ -1,0 +1,16 @@
+{
+  "api_version": "lifechronicle.io/registry-fixture/v1",
+  "name": "public-projection",
+  "base": "templates/stream-v1.yaml",
+  "mutations": [
+    {
+      "op": "set",
+      "path": "privacy.public_projection",
+      "value": "public.activity"
+    }
+  ],
+  "expected": {
+    "valid": false,
+    "error_contains": "v1 registry definitions must set public_projection to none"
+  }
+}

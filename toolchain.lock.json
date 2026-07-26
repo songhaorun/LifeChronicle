@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "policy": "exact versions; local generation only",
+  "tools": {
+    "buf": {
+      "version": "1.72.0",
+      "windows_x86_64_sha256": "6e8f6d043e520bc81cae7b85d4cd6d93e57716a8a9842d5d18200191ee259cb5",
+      "source": "https://github.com/bufbuild/buf/releases/tag/v1.72.0"
+    },
+    "protoc": {
+      "version": "35.0",
+      "rust_runtime_version": "4.35.0-release",
+      "windows_x86_64_zip_sha256": "d1cede9e308cc3eb072392af1c02ccae4bdd3d2f374ec2970dbd8cdfdaa91363",
+      "source": "https://github.com/protocolbuffers/protobuf/releases/tag/v35.0"
+    },
+    "protoc-gen-go": {
+      "version": "1.36.11",
+      "module": "google.golang.org/protobuf/cmd/protoc-gen-go@v1.36.11",
+      "source": "https://pkg.go.dev/google.golang.org/protobuf@v1.36.11/cmd/protoc-gen-go"
+    },
+    "protoc-gen-es": {
+      "version": "2.13.0",
+      "package": "@bufbuild/protoc-gen-es@2.13.0",
+      "source": "https://www.npmjs.com/package/@bufbuild/protoc-gen-es/v/2.13.0"
+    },
+    "go": {
+      "version": "1.26.5",
+      "windows_x86_64_zip_sha256": "97e6b2a833b6d89f9ff17d25419ac0a7e3b482a044e9ab18cdef834bd834fd38",
+      "source": "https://go.dev/dl/"
+    },
+    "rust": {
+      "rustc_version": "1.97.1",
+      "cargo_version": "1.97.1",
+      "source": "https://blog.rust-lang.org/2026/07/16/Rust-1.97.1/"
+    },
+    "java": {
+      "jdk_version": "24.0.2",
+      "source_release": "17",
+      "ci_distribution": "temurin",
+      "source": "https://adoptium.net/temurin/releases/?version=24"
+    },
+    "gradle": {
+      "version": "9.0.0",
+      "source": "https://services.gradle.org/distributions/gradle-9.0.0-bin.zip",
+      "bin_zip_sha256": "8fad3d78296ca518113f3d29016617c7f9367dc005f932bd9d93bf45ba46072b"
+    },
+    "kotlin": {
+      "gradle_plugin_version": "2.2.0",
+      "source": "https://github.com/JetBrains/kotlin/releases/tag/v2.2.0"
+    },
+    "node": {
+      "version": "22.12.0",
+      "source": "https://nodejs.org/dist/v22.12.0/"
+    },
+    "pnpm": {
+      "version": "9.15.4",
+      "source": "https://github.com/pnpm/pnpm/releases/tag/v9.15.4"
+    },
+    "typescript": {
+      "version": "6.0.3",
+      "source": "https://www.npmjs.com/package/typescript/v/6.0.3"
+    }
+  },
+  "language_runtimes": {
+    "go": "google.golang.org/protobuf@v1.36.11",
+    "rust": "protobuf@4.35.0-release + protobuf-well-known-types@4.35.0-release",
+    "java": "com.google.protobuf:protobuf-java:4.35.0",
+    "kotlin": "com.google.protobuf:protobuf-kotlin:4.35.0",
+    "typescript": "@bufbuild/protobuf@2.13.0"
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "api_version": "lifechronicle.io/metric/v1",
+  "name": "example.duration",
+  "status": "draft",
+  "owner": "data-processing",
+  "lifecycle": {
+    "introduced_registry_version": 1,
+    "deprecated_registry_version": null,
+    "retired_registry_version": null,
+    "replacement": null,
+    "migration_note": null
+  },
+  "description": "Template for a deterministic duration metric.",
+  "schema": {
+    "version": 1,
+    "value_type": "INT64"
+  },
+  "unit": "ns",
+  "source_streams": [
+    {
+      "stream": "app.foreground",
+      "schema_versions": [
+        1
+      ]
+    }
+  ],
+  "event_time": {
+    "basis": "session_boundaries",
+    "max_out_of_order": "15m",
+    "realtime_allowed_lateness": "24h",
+    "late_event_action": "topic_and_workflow_replay"
+  },
+  "window": {
+    "type": "SESSION",
+    "size": null,
+    "timezone": "UTC"
+  },
+  "aggregation": {
+    "operation": "DURATION_BETWEEN_TRANSITIONS",
+    "input_fields": [
+      "observed_at"
+    ],
+    "group_by": [
+      "user_id",
+      "device_id"
+    ],
+    "deterministic": true,
+    "revision_field": "revision"
+  },
+  "processors": [
+    {
+      "id": "replace-me",
+      "accepted_metric_versions": [
+        1
+      ]
+    }
+  ],
+  "defaults": {
+    "privacy_class": "PRIVATE",
+    "retention_class": "LONG_TERM"
+  },
+  "accepted_retention_classes": [
+    "STANDARD",
+    "LONG_TERM",
+    "USER_MANAGED"
+  ],
+  "privacy": {
+    "public_projection": "none"
+  }
+}

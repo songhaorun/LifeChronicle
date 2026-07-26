@@ -1,0 +1,36 @@
+version: v2
+clean: true
+
+plugins:
+  - protoc_builtin: java
+    protoc_path: protoc
+    out: generated/java
+
+  - protoc_builtin: kotlin
+    protoc_path: protoc
+    out: generated/kotlin
+
+  - protoc_builtin: rust
+    protoc_path: protoc
+    out: generated/rust
+    opt:
+      - experimental-codegen=enabled
+      - kernel=upb
+      - crate_mapping=codegen/rust/crate_mapping.txt
+      - generated_entry_point_rs_file_name=lib.rs
+
+  - local: protoc-gen-go
+    out: generated/go
+    opt:
+      - paths=source_relative
+
+  - local:
+      - node
+      - codegen/typescript/node_modules/@bufbuild/protoc-gen-es/bin/protoc-gen-es
+    out: generated/typescript
+    opt:
+      - target=ts
+      - import_extension=js
+
+inputs:
+  - directory: proto

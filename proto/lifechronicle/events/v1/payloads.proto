@@ -1,0 +1,48 @@
+syntax = "proto3";
+
+package lifechronicle.events.v1;
+
+option go_package = "github.com/lifechronicle/lifechronicle/gen/go/lifechronicle/events/v1;eventsv1";
+option java_multiple_files = true;
+option java_outer_classname = "PayloadsProto";
+option java_package = "io.lifechronicle.events.v1";
+option java_string_check_utf8 = true;
+
+// IdleStatus is the collector-observed user activity state.
+enum IdleStatus {
+  IDLE_STATUS_UNSPECIFIED = 0;
+  IDLE_STATUS_ACTIVE = 1;
+  IDLE_STATUS_IDLE = 2;
+}
+
+// ScreenPowerState is the collector-observed display power state.
+enum ScreenPowerState {
+  SCREEN_POWER_STATE_UNSPECIFIED = 0;
+  SCREEN_POWER_STATE_ON = 1;
+  SCREEN_POWER_STATE_DIMMED = 2;
+  SCREEN_POWER_STATE_OFF = 3;
+}
+
+// AppForeground is the v1 payload for app.foreground.
+message AppForeground {
+  string application_id = 1;
+  string application_name = 2;
+  string executable_name = 3;
+  string window_title = 4;
+  uint64 process_id = 5;
+  string window_id = 6;
+  bool fullscreen = 7;
+}
+
+// IdleState is the v1 payload for device.idle.state.
+message IdleState {
+  IdleStatus status = 1;
+  uint64 idle_duration_ms = 2;
+}
+
+// ScreenState is the v1 payload for device.screen.state.
+message ScreenState {
+  ScreenPowerState power_state = 1;
+  bool locked = 2;
+  string display_id = 3;
+}

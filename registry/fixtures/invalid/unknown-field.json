@@ -1,0 +1,16 @@
+{
+  "api_version": "lifechronicle.io/registry-fixture/v1",
+  "name": "unknown-field",
+  "base": "templates/stream-v1.yaml",
+  "mutations": [
+    {
+      "op": "set",
+      "path": "unexpected_setting",
+      "value": true
+    }
+  ],
+  "expected": {
+    "valid": false,
+    "error_contains": "$: unknown field 'unexpected_setting'"
+  }
+}

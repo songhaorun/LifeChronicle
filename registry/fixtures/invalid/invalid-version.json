@@ -1,0 +1,16 @@
+{
+  "api_version": "lifechronicle.io/registry-fixture/v1",
+  "name": "invalid-version",
+  "base": "templates/stream-v1.yaml",
+  "mutations": [
+    {
+      "op": "set",
+      "path": "schema.version",
+      "value": 0
+    }
+  ],
+  "expected": {
+    "valid": false,
+    "error_contains": "$.schema.version: must be >= 1"
+  }
+}

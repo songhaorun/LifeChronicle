@@ -1,0 +1,85 @@
+syntax = "proto3";
+
+package lifechronicle.events.v1;
+
+import "google/protobuf/timestamp.proto";
+import "lifechronicle/events/v1/common.proto";
+import "lifechronicle/events/v1/event.proto";
+import "lifechronicle/events/v1/series.proto";
+
+option go_package = "github.com/lifechronicle/lifechronicle/gen/go/lifechronicle/events/v1;eventsv1";
+option java_multiple_files = true;
+option java_outer_classname = "UploadProto";
+option java_package = "io.lifechronicle.events.v1";
+option java_string_check_utf8 = true;
+
+// UploadBatch is the signed transport envelope. Signatures cover the
+// independently specified LCB1 frame, never a Protobuf serialization.
+message UploadBatch {
+  string batch_id = 1;
+  string device_id = 2;
+  string collector_instance_id = 3;
+  uint64 sequence_start = 4;
+  uint64 sequence_end = 5;
+  google.protobuf.Timestamp created_at = 6;
+  bytes nonce = 7;
+  Compression compression = 8;
+  bytes compressed_items = 9;
+  bytes payload_sha256 = 10;
+  bytes signature = 11;
+  string source = 12;
+}
+
+// BatchItems is compressed into UploadBatch.compressed_items. An ingestion
+// implementation must retain the original length-delimited SeriesChunk value
+// bytes for LCS1 rather than reserializing decoded messages.
+message BatchItems {
+  repeated EventEnvelope events = 1;
+  repeated SeriesChunk series_chunks = 2;
+}
+
+// ItemStatus controls whether an Agent may remove an item from its Outbox.
+enum ItemStatus {
+  ITEM_STATUS_UNSPECIFIED = 0;
+  ITEM_STATUS_ACCEPTED_TO_LOG = 1;
+  ITEM_STATUS_DUPLICATE = 2;
+  ITEM_STATUS_REJECTED_PERMANENT = 3;
+  ITEM_STATUS_RETRYABLE = 4;
+}
+
+// IngestionErrorCode is the stable v1 vocabulary carried by
+// ItemAcknowledgement.error_code. The field remains a string on the wire so
+// future independently deployed services can safely return new codes.
+enum IngestionErrorCode {
+  INGESTION_ERROR_CODE_UNSPECIFIED = 0;
+  INGESTION_ERROR_CODE_AUTH_INVALID = 1;
+  INGESTION_ERROR_CODE_DEVICE_REVOKED = 2;
+  INGESTION_ERROR_CODE_SIGNATURE_INVALID = 3;
+  INGESTION_ERROR_CODE_NONCE_REPLAYED = 4;
+  INGESTION_ERROR_CODE_PAYLOAD_HASH_MISMATCH = 5;
+  INGESTION_ERROR_CODE_PROTO_DECODE_FAILED = 6;
+  INGESTION_ERROR_CODE_STREAM_UNKNOWN = 7;
+  INGESTION_ERROR_CODE_SCHEMA_VERSION_UNSUPPORTED = 8;
+  INGESTION_ERROR_CODE_SCHEMA_VALIDATION_FAILED = 9;
+  INGESTION_ERROR_CODE_ID_CONTENT_CONFLICT = 10;
+  INGESTION_ERROR_CODE_BATCH_LIMIT_EXCEEDED = 11;
+  INGESTION_ERROR_CODE_RATE_LIMITED = 12;
+  INGESTION_ERROR_CODE_KAFKA_UNAVAILABLE = 13;
+  INGESTION_ERROR_CODE_OBJECT_STORAGE_UNAVAILABLE = 14;
+  INGESTION_ERROR_CODE_INTERNAL_RETRYABLE = 15;
+}
+
+// ItemAcknowledgement reports the durable per-item ingestion outcome.
+message ItemAcknowledgement {
+  string item_id = 1;
+  ItemStatus status = 2;
+  string error_code = 3;
+  string error_detail_id = 4;
+}
+
+// BatchAcknowledgement reports outcomes for one exact UploadBatch submission.
+message BatchAcknowledgement {
+  string batch_id = 1;
+  repeated ItemAcknowledgement items = 2;
+  google.protobuf.Timestamp acknowledged_at = 3;
+}

@@ -1,0 +1,16 @@
+{
+  "api_version": "lifechronicle.io/registry-fixture/v1",
+  "name": "missing-privacy",
+  "base": "templates/stream-v1.yaml",
+  "mutations": [
+    {
+      "op": "delete",
+      "path": "defaults.privacy_class",
+      "value": null
+    }
+  ],
+  "expected": {
+    "valid": false,
+    "error_contains": "$.defaults: missing required field 'privacy_class'"
+  }
+}

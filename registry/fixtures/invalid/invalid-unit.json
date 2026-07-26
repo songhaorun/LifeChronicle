@@ -1,0 +1,16 @@
+{
+  "api_version": "lifechronicle.io/registry-fixture/v1",
+  "name": "invalid-unit",
+  "base": "templates/metric-v1.yaml",
+  "mutations": [
+    {
+      "op": "set",
+      "path": "unit",
+      "value": "seconds please!"
+    }
+  ],
+  "expected": {
+    "valid": false,
+    "error_contains": "$.unit: value does not match"
+  }
+}

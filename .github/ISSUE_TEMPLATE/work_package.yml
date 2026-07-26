@@ -1,0 +1,91 @@
+name: 工作包
+description: 建立满足 Definition of Ready 的可交付工作包
+title: "work: "
+labels:
+  - work-package
+body:
+  - type: input
+    id: id
+    attributes:
+      label: 唯一 ID
+      placeholder: R0-01 / M3-05 / E11-02
+    validations:
+      required: true
+
+  - type: input
+    id: owner
+    attributes:
+      label: Owner
+    validations:
+      required: true
+
+  - type: textarea
+    id: users
+    attributes:
+      label: 目标用户或调用者
+    validations:
+      required: true
+
+  - type: textarea
+    id: result
+    attributes:
+      label: 可独立演示的结果
+    validations:
+      required: true
+
+  - type: textarea
+    id: scope
+    attributes:
+      label: 范围、非目标与模块边界
+    validations:
+      required: true
+
+  - type: textarea
+    id: authority
+    attributes:
+      label: 权威规范与受影响契约
+      description: 列出文档、ADR、测试 ID 和 owner。
+    validations:
+      required: true
+
+  - type: textarea
+    id: privacy
+    attributes:
+      label: 隐私、安全、保留、删除、导出与审计
+    validations:
+      required: true
+
+  - type: textarea
+    id: dependencies
+    attributes:
+      label: 依赖、第三方、数据与环境
+      description: 包含来源登记 ID、许可证、测试环境和代表性合成数据。
+    validations:
+      required: true
+
+  - type: textarea
+    id: migration
+    attributes:
+      label: 兼容、迁移、发布与回滚
+    validations:
+      required: true
+
+  - type: textarea
+    id: verification
+    attributes:
+      label: 测试、故障和完成证据
+      description: 列出命令、契约 ID、拒绝路径、报告位置和验收人。
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: ready
+    attributes:
+      label: Ready 自检
+      options:
+        - label: 缺少用户选择、授权、删除范围或恢复点的问题已经解决
+          required: true
+        - label: 所需 ADR 已接受，或工作明确仅限可丢弃原型
+          required: true
+        - label: 不存在用 N/A 冒充尚未实现门禁通过的情况
+          required: true

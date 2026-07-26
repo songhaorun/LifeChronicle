@@ -1,0 +1,13 @@
+{
+  "extends": "../../../codegen/typescript/tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "outDir": "build",
+    "rootDir": "../../..",
+    "sourceMap": false
+  },
+  "include": [
+    "src/**/*.ts",
+    "../../../generated/typescript/**/*.ts"
+  ]
+}

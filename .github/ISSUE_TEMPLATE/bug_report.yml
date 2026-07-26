@@ -1,0 +1,101 @@
+name: Bug 报告
+description: 报告可复现的错误、回归或数据不变量问题
+title: "bug: "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        安全漏洞、真实个人数据泄露或可直接滥用的问题不要公开提交，请按 `SECURITY.md` 私下报告。
+
+  - type: input
+    id: work_package
+    attributes:
+      label: Issue / 工作包 ID
+      description: 已有关联项请填写；没有时写“新 issue”。
+      placeholder: "R0-03 / M7-04 / #123 / 新 issue"
+    validations:
+      required: true
+
+  - type: textarea
+    id: summary
+    attributes:
+      label: 问题摘要
+      description: 说明谁在什么情况下遇到什么问题，以及影响。
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: 环境与版本
+      description: 填写 commit/tag、操作系统、运行方式、相关组件和配置差异；不要粘贴 Secret。
+      placeholder: |
+        commit:
+        OS:
+        component:
+        deployment:
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: 最小复现步骤
+      description: 只使用合成或已脱敏数据。
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: 预期行为
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: 实际行为
+    validations:
+      required: true
+
+  - type: dropdown
+    id: impact
+    attributes:
+      label: 影响类别
+      multiple: true
+      options:
+        - 功能
+        - 数据丢失或重复
+        - 事件时间或派生错误
+        - 兼容或迁移
+        - 性能或容量
+        - 隐私或公开范围
+        - 身份、授权或安全
+        - 运维或恢复
+    validations:
+      required: true
+
+  - type: textarea
+    id: evidence
+    attributes:
+      label: 已脱敏证据
+      description: 可提供最小日志、截图或测试；删除 Token、位置、健康值、用户文本和身份信息。
+
+  - type: textarea
+    id: workaround
+    attributes:
+      label: 临时缓解与回滚
+      description: 已采取什么安全停止、回滚或隔离措施？
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: 提交前确认
+      options:
+        - label: 我确认该 issue 不含 Secret、真实个人数据或未经授权的第三方内容
+          required: true
+        - label: 我确认这不是应按 `SECURITY.md` 私下报告的漏洞
+          required: true

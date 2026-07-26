@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+package lifechronicle.events.v1;
+
+import "google/protobuf/timestamp.proto";
+import "lifechronicle/events/v1/common.proto";
+import "lifechronicle/events/v1/event.proto";
+import "lifechronicle/events/v1/series.proto";
+
+option go_package = "github.com/lifechronicle/lifechronicle/gen/go/lifechronicle/events/v1;eventsv1";
+option java_multiple_files = true;
+option java_outer_classname = "IngestionProto";
+option java_package = "io.lifechronicle.events.v1";
+option java_string_check_utf8 = true;
+
+// RawEventRecord is the value contract for lc.raw.events.v1.
+message RawEventRecord {
+  EventEnvelope event = 1;
+  string batch_id = 2;
+  google.protobuf.Timestamp received_at = 3;
+  google.protobuf.Timestamp ingested_at = 4;
+  bytes submitted_sha256 = 5;
+  bytes canonical_sha256 = 6;
+  string authenticated_principal = 7;
+  repeated QualitySignal quality_signals = 8;
+}
+
+// RawSeriesRecord is the value contract for lc.raw.series-metadata.v1. The
+// compressed payload itself is retained only in the referenced object.
+message RawSeriesRecord {
+  SeriesChunkMetadata chunk = 1;
+  string user_id = 2;
+  string batch_id = 3;
+  google.protobuf.Timestamp received_at = 4;
+  google.protobuf.Timestamp ingested_at = 5;
+  SeriesObjectReference object = 6;
+  bytes series_submitted_sha256 = 7;
+  bytes series_canonical_sha256 = 8;
+  string authenticated_principal = 9;
+  repeated QualitySignal quality_signals = 10;
+}
