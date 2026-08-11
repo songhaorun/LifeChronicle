@@ -62,19 +62,9 @@ jobs:
         shell: pwsh
         run: ./scripts/bootstrap_contract_tools.ps1
 
-      - name: Select GNU Make from the Windows image
-        shell: pwsh
-        run: |
-          $makeDirectory = "C:\msys64\usr\bin"
-          $makePath = Join-Path $makeDirectory "make.exe"
-          if (-not (Test-Path -LiteralPath $makePath -PathType Leaf)) {
-            throw "The windows-2025 image does not provide the expected pinned-image GNU Make."
-          }
-          $makeDirectory >> $env:GITHUB_PATH
-
       - name: Run the Phase 0 gate
         shell: pwsh
-        run: make phase-0-gate
+        run: python scripts/phase0_gate.py
 
       - name: Reject whitespace errors and generated drift
         shell: pwsh
