@@ -45,21 +45,29 @@ Registry 正反例、16 个语义契约测试、五语言生成编译、连续�
 - breaking 负控会拒绝字段删除/重编号，Registry 负例和签名/幂等负例会失败关闭；
 - 本地工具、依赖缓存、Gradle/Cargo/Go/TypeScript 构建产物和 Secret 不进入 Git 候选集。
 
-## 4. 已知限制与远程激活条件
+## 4. 远程激活证据与治理边界
 
-当前没有 Git remote，因此以下事项没有被宣称已经发生：
+2026-08-11 完成 GitHub 远程激活：
 
-- GitHub Actions 托管运行成功；
-- GitHub 服务端 `main` 分支保护已启用；
-- 非作者 PR 批准或 CODEOWNERS 远程身份识别已验证。
+- 公开仓库为
+  [`songhaorun/LifeChronicle`](https://github.com/songhaorun/LifeChronicle)，默认分支为
+  `main`；
+- `CODEOWNERS` 使用已登录并验证的 GitHub 账号 `@songhaorun`；
+- 提交 `15a32a17d10b6ca4144a3e674b73afc00804cb11` 的托管
+  [`phase-0-gate` 运行 31456588739](https://github.com/songhaorun/LifeChronicle/actions/runs/31456588739)
+  成功，完整门禁、生成物漂移检查和工作流收尾步骤全部通过；
+- 服务端 `main` 使用 `.github/branch-protection-main.json` 的版本化策略：严格要求
+  `phase-0-gate`、PR、CODEOWNERS、最后推送者之外的批准、对话解决和线性历史，禁止
+  强推与删除，并对管理员执行相同规则。
 
-仓库已经保存精确 SHA 固定的 CI 工作流和
-`.github/branch-protection-main.json` 目标策略。创建远程并准备进入多人治理时，必须：
+`artifacts/phase0/latest.json` 保持为 2026-07-27 本地 bootstrap 门禁的不可混淆历史
+证据，其“没有远程”限制描述的是该次运行环境，不代表当前仓库状态。首次托管运行
+`31456422883` 因 `windows-2025` 不含假定路径的 `make.exe` 失败；提交 `15a32a1` 改为
+直接执行同一门禁入口 `scripts/phase0_gate.py` 后，上述运行成功。
 
-1. 确认托管平台能识别 CODEOWNERS 账号或团队；
-2. 推送 `main` 并让 `phase-0-gate` 托管检查成功；
-3. 应用目标保护策略，验证强制 PR、CODEOWNERS、对话解决、线性历史和禁止强推/删除；
-4. 登记第二名维护者并按 `GOVERNANCE.md` 切换治理模式。
+项目仍是单维护者 bootstrap 模式：尚未登记第二名维护者，也没有非作者 PR 批准证据。
+在第二名维护者接受职责并完成角色登记前，不宣称已经切换到多人治理；保护规则的单人
+维护操作由仓库管理员按 bootstrap 记录负责，不能替代独立评审。
 
 JDK 24 运行 Protobuf JVM 4.35.0 时会打印 `sun.misc.Unsafe` 终止弃用警告；当前编译和
 黄金结果通过，但升级 JDK 或 Protobuf 时必须继续验证并消除该兼容风险。

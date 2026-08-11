@@ -35,6 +35,7 @@ make phase-0-gate
 ```
 
 该命令执行治理、ADR、文档、来源/Secret 扫描、Buf 兼容、Registry 正反例、五语言
-生成编译、重复生成和跨语言黄金向量。仓库当前没有远程地址，因此托管 CI 尚未实跑，
-服务端 `main` 分支保护也尚未生效；版本化工作流和目标保护策略已经提交，建立远程时
-必须应用并验证。
+生成编译、重复生成和跨语言黄金向量。公开远程仓库为
+[`songhaorun/LifeChronicle`](https://github.com/songhaorun/LifeChronicle)；托管
+`phase-0-gate` 和 `main` 保护的激活证据见
+[阶段 0 验收记录](docs/governance/phase0-acceptance.md)。

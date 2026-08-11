@@ -1,38 +1,37 @@
-# Bootstrap owner. Before enabling protected branches, confirm that the hosting
-# platform recognizes this email or replace it with a verified account/team.
-* 1963535597@qq.com
+# Verified GitHub bootstrap owner.
+* @songhaorun
 
 # Governance and repository policy
-/LICENSE 1963535597@qq.com
-/CONTRIBUTING.md 1963535597@qq.com
-/CODE_OF_CONDUCT.md 1963535597@qq.com
-/SECURITY.md 1963535597@qq.com
-/GOVERNANCE.md 1963535597@qq.com
-/THIRD_PARTY_SOURCES.md 1963535597@qq.com
-/.github/ 1963535597@qq.com
-/docs/governance/ 1963535597@qq.com
+/LICENSE @songhaorun
+/CONTRIBUTING.md @songhaorun
+/CODE_OF_CONDUCT.md @songhaorun
+/SECURITY.md @songhaorun
+/GOVERNANCE.md @songhaorun
+/THIRD_PARTY_SOURCES.md @songhaorun
+/.github/ @songhaorun
+/docs/governance/ @songhaorun
 
 # Contracts, architecture, data, privacy and infrastructure
-/docs/contract/ 1963535597@qq.com
-/docs/protocol/ 1963535597@qq.com
-/docs/architecture/ 1963535597@qq.com
-/docs/operations/ 1963535597@qq.com
-/docs/research/ 1963535597@qq.com
-/docs/planning/ 1963535597@qq.com
+/docs/contract/ @songhaorun
+/docs/protocol/ @songhaorun
+/docs/architecture/ @songhaorun
+/docs/operations/ @songhaorun
+/docs/research/ @songhaorun
+/docs/planning/ @songhaorun
 
 # Planned top-level implementation boundaries
-/proto/ 1963535597@qq.com
-/registry/ 1963535597@qq.com
-/codegen/ 1963535597@qq.com
-/generated/ 1963535597@qq.com
-/contract-tests/ 1963535597@qq.com
-/scripts/ 1963535597@qq.com
-/services/ 1963535597@qq.com
-/agents/ 1963535597@qq.com
-/streaming/ 1963535597@qq.com
-/workflows/ 1963535597@qq.com
-/lakehouse/ 1963535597@qq.com
-/web/ 1963535597@qq.com
-/plugins/ 1963535597@qq.com
-/infrastructure/ 1963535597@qq.com
-/tests/ 1963535597@qq.com
+/proto/ @songhaorun
+/registry/ @songhaorun
+/codegen/ @songhaorun
+/generated/ @songhaorun
+/contract-tests/ @songhaorun
+/scripts/ @songhaorun
+/services/ @songhaorun
+/agents/ @songhaorun
+/streaming/ @songhaorun
+/workflows/ @songhaorun
+/lakehouse/ @songhaorun
+/web/ @songhaorun
+/plugins/ @songhaorun
+/infrastructure/ @songhaorun
+/tests/ @songhaorun

@@ -19,9 +19,9 @@
 
 阶段 0 完成命令：`make phase-0-gate`
 
-阶段 0 于 2026-07-27 在 bootstrap/单维护者模式完成本地验收；自审、机器报告和无远程
-边界见[阶段 0 验收记录](../../governance/phase0-acceptance.md)。远程托管 CI 与服务端
-分支保护只在远程建立后生效，不在本地记录中冒充已执行。
+阶段 0 于 2026-07-27 在 bootstrap/单维护者模式完成本地验收，并于 2026-08-11 完成
+GitHub 远程、托管 CI、有效 CODEOWNERS 和服务端 `main` 保护的激活；本地与托管证据及
+尚未满足的第二维护者边界见[阶段 0 验收记录](../../governance/phase0-acceptance.md)。
 
 ## 阶段 1：可复现基础设施
 

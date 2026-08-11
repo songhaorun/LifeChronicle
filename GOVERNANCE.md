@@ -22,14 +22,14 @@
 
 | 角色 | 当前负责人 | 权限与责任 |
 | --- | --- | --- |
-| Bootstrap maintainer | 宋昊润（`1963535597@qq.com`） | 仓库治理、普通可逆变更自审、角色登记和模式切换 |
+| Bootstrap maintainer | 宋昊润（GitHub `@songhaorun`；`1963535597@qq.com`） | 仓库治理、普通可逆变更自审、角色登记和模式切换 |
 | Copyright holder | 宋昊润 | 选择项目自有内容的 MIT License |
 | Release owner | 宋昊润 | 批准 tag、制品和发布记录；当前无正式发行版 |
 | Security contact | 宋昊润（见 `SECURITY.md`） | 私下接收、分级和协调安全报告 |
 | Contract/Data/Security/Platform owner | Bootstrap maintainer 临时兼任 | 仅限非生产 bootstrap；不得借兼任放宽不可豁免不变量 |
 
-`CODEOWNERS` 当前使用维护者邮箱。建立远程仓库和分支保护前，维护者必须确认托管平台
-能识别该邮箱；不能识别时，应在启用保护前改为已验证账号或团队，不能保留无效 owner。
+`CODEOWNERS` 使用已验证的 GitHub 账号 `@songhaorun`。增加维护者或切换托管平台时，
+必须同步更新角色登记和所有权规则，不能保留托管平台无法识别的 owner。
 
 ## 3. Bootstrap 模式
 
